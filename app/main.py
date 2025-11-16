@@ -64,10 +64,9 @@ class Dictionary:
                 self._insert_no_resize(node.key, node.value)
                 node = node.next
 
-    def clear(self, initial_capacity: int = 8) -> None:
-        self._size = 0
-        self._capacity = initial_capacity
+    def clear(self) -> None:
         self._buckets = [None] * self._capacity
+        self._size = 0
 
     def __delitem__(self, key: Any) -> None:
         hash_calculated = hash(key)
