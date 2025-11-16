@@ -1,5 +1,7 @@
 from typing import Any, Iterator
 
+_sentinel = object()
+
 
 class Dictionary:
     def __init__(self, initial_capacity: int = 8) -> None:
@@ -98,7 +100,7 @@ class Dictionary:
             node = node.next
         return default
 
-    def pop(self, key: Any) -> Any:
+    def pop(self, key: Any, default: Any = _sentinel) -> Any:
         hash_calculated = hash(key)
         index = hash_calculated % self._capacity
         node = self._buckets[index]
@@ -107,14 +109,20 @@ class Dictionary:
         while node is not None:
             if node.key == key:
                 value = node.value
+
                 if prev is None:
                     self._buckets[index] = node.next
                 else:
                     prev.next = node.next
+
                 self._size -= 1
                 return value
+
             prev = node
             node = node.next
+
+        if default is not _sentinel:
+            return default
 
         raise KeyError(f"Key not found: {key!r}")
 
